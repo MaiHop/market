@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+
+
+<hibernate-mapping>
+   <class name = "DAL.Category" table = "Category">
+      
+      <meta attribute = "class-description">
+         This class contains the category detail. 
+      </meta>
+      
+      <id name = "CatagoryID" type = "int" column = "CatagoryID">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "Name" column = "Name" type = "string"/>
+      <property name = "Description" column = "Description" type = "string"/>
+      
+   </class>
+</hibernate-mapping>
+
+

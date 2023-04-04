@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">   
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database setting -->
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/market3</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password"></property>
+      <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">100</property>    
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+        <!-- Disable the second-level cache --> 
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property> 
+        <!-- Show all executed SQL to console -->
+        <property name="show_sql">true</property>
+        <!-- Entity mapping -->
+        <!-- <mapping class="demopl.DAL.Course" /> -->
+        
+        <mapping class = "DTO.Category"/>
+        <mapping class = "DTO.Customers"/>
+        <mapping class = "DTO.Orders"/>
+        <mapping class = "DTO.OrderDetail"/>
+        <mapping class = "DTO.Vegetable"/>
+        
+    </session-factory>
+</hibernate-configuration>
+
+
