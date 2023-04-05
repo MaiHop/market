@@ -7,6 +7,7 @@ package DTO;
 import java.io.Serializable;
 import static java.nio.file.Files.delete;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -30,14 +31,16 @@ import lombok.Data;
 @Entity
 @Table(name = "OrderDetail")
 public class OrderDetail implements Serializable{
-    @EmbeddedId
-    private OrderDetailkey id;
+    @Id
+    private int OrderID;
+    @Id
+    private int VegetableID;
     @Column
     private int Quantity;
     @Column
     private float Price;
     
-    @ManyToOne(fetch = FetchType.EAGER, optional=false)
+    @ManyToOne(fetch = FetchType.EAGER, optional=false, cascade = CascadeType.REMOVE)
     @MapsId("OrderID")
     @JoinColumn(name = "OrderID", nullable = false, foreignKey = @ForeignKey(name="fk_order"),insertable=false, updatable=false)
     private Orders orders;

@@ -77,16 +77,16 @@ public class VegetableDAL {
         }
         VegetableDAL odDAL = new VegetableDAL();
         
-        List<Object[]> od = odDAL.filterVegetable();
-        for(Object[] odd  : od){
+        Vegetable od = odDAL.getVegetable(1);
+        
                 //if(odd.getCategory().getName().contains("Fruit")){
-                    System.out.println("CatagoryID: "+ Arrays.toString(odd));
+                    System.out.println("CatagoryID: "+ od.getCategory().getName());
                     
                     //System.out.println("Category Name: "+ odd.getCategory().getName());
                 //}
                 
                 //System.out.println("Description: "+ odd.getVegetable().getVegetableName());
-            }
+            
             
     }
 }

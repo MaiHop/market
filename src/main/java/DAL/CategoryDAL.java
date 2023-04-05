@@ -74,8 +74,9 @@ public class CategoryDAL {
             throw new ExceptionInInitializerError(ex);
         }   
         CategoryDAL category = new CategoryDAL();
-        Category c = category.getCategory(1);
-        List VegList = c.getListVegetable();
-        System.out.println("DAL.CategoryDAL.main()  :" + c.getName());
+        List<Vegetable> v = category.getCategory(1).getListVegetable();
+        for(Vegetable vg : v){
+            System.out.println("Name: " + vg.getVegetable_Name());
+        }
     }
 }

@@ -54,7 +54,8 @@ public class Orders{
     @Column
     private String Note;
     
-    @OneToMany (fetch = FetchType.LAZY, targetEntity = OrderDetail.class)
+    @OneToMany (fetch = FetchType.LAZY, targetEntity = OrderDetail.class, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "OrderID", nullable = false, foreignKey = @ForeignKey(name="fk_customer"),insertable=false, updatable=false)
     private List<OrderDetail> listorder;
    
     

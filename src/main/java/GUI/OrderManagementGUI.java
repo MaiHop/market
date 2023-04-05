@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,10 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
@@ -49,6 +53,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
     private DefaultTableModel tblordermodel;
     private DefaultTableModel tblvegetablemodel;
     private int cusID;
+    private List<OrderDetail> listveg = new ArrayList<>();
     private static Orders odCRUD = new Orders();
     
     public OrderManagementGUI() {
@@ -57,6 +62,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         initTableOrderDetail();//Tên cột hóa đơn đã lưu
         loadDataToTableOrders();// Hiển thị dữ liệu sản phẩm đã thêm
         cbbcustomer.setSelectedItem("");
+        cbbvegetable.setSelectedItem("");
         loadDataToCbCustomers();// Hiển thị dữ liệu khách hàng vào combobox
         cbbCustomereditable();// Hiển thị dữ liệu khách hàng tìm kiếm theo tên
         loadDataToCbVegetables();//Hiển thị dữ liệu sản phẩm vào combobox
@@ -84,6 +90,19 @@ public class OrderManagementGUI extends javax.swing.JFrame {
               });
             }
             tblordermodel.fireTableDataChanged();
+        } catch (Exception e) {
+        }
+    }
+    private void loadDataToTableOrdersDetails(List<OrderDetail> list) {
+        try {
+                tblvegetablemodel.setRowCount(0);
+                for (OrderDetail it : list) {
+                tblvegetablemodel.addRow(new Object[]{
+                    it.getVegetable().getVegetableID(),  it.getVegetable().getVegetable_Name()
+                        ,it.getVegetable().getPrice(), it.getQuantity(), it.getVegetable().getUnit(), it.getPrice()
+              });
+            }
+            tblvegetablemodel.fireTableDataChanged();
         } catch (Exception e) {
         }
     }
@@ -125,7 +144,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
     private void loadDataToCbVegetables() {
         try {
             VegetableBLL vegBLL = new VegetableBLL();
-            List<Vegetable> listvg = vegBLL.LoadVegetablesCbb(WIDTH);
+            List<Vegetable> listvg = vegBLL.LoadVegetables(WIDTH);
             for (Vegetable vg : listvg) {
                 String name= vg.getVegetableID()+ " - "+vg.getVegetable_Name();
                 cbbvegetable.addItem(name);
@@ -198,7 +217,6 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         lbtotal = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         btnoadd = new javax.swing.JButton();
-        btnoupdate = new javax.swing.JButton();
         btnodelete = new javax.swing.JButton();
         btnoreset = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -432,6 +450,11 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         cbbvegetable.setEditable(true);
         cbbvegetable.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         cbbvegetable.setMaximumRowCount(2);
+        cbbvegetable.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbvegetableItemStateChanged(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel8.setText("Category:");
@@ -461,6 +484,11 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         jLabel12.setText("Quantity:");
 
         spiquanity.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        spiquanity.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spiquanityStateChanged(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel14.setText("Price:");
@@ -492,9 +520,6 @@ public class OrderManagementGUI extends javax.swing.JFrame {
                 btnoaddActionPerformed(evt);
             }
         });
-
-        btnoupdate.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        btnoupdate.setText("UPDATE");
 
         btnodelete.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         btnodelete.setText("DELETE");
@@ -550,8 +575,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(btnoadd, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(70, 70, 70)
-                                        .addComponent(btnoupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(160, 160, 160))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -622,7 +646,6 @@ public class OrderManagementGUI extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnoadd)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnoupdate)
                         .addComponent(btnodelete)
                         .addComponent(btnoreset)))
                 .addGap(0, 96, Short.MAX_VALUE))
@@ -696,8 +719,6 @@ public class OrderManagementGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn khách hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         JTextField editcus = (JTextField) cbbcustomer.getEditor().getEditorComponent();
-//        Calendar cal = Calendar.getInstance();
-//        Date date = cal.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         editcus.setText(cbbcustomer.getSelectedItem().toString());
         String info = editcus.getText();
@@ -737,28 +758,50 @@ public class OrderManagementGUI extends javax.swing.JFrame {
     }
 
     private void cbbcustomerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbcustomerItemStateChanged
-       JTextField editcus = (JTextField) cbbcustomer.getEditor().getEditorComponent();
-       Calendar cal = Calendar.getInstance();
-       if(cbbcustomer.getSelectedIndex()>-1){
-       editcus.setText(cbbcustomer.getSelectedItem().toString());
-       String info = editcus.getText();
-       int id = Character.getNumericValue(info.charAt(0));    
-       //txtaddress.setText(String.valueOf(id) );
-       try {
-            CustomerBLL cusBLL = new CustomerBLL();
-            OrderBLL odBLL = new OrderBLL(); 
-            Customers cus = cusBLL.getCustomer(id);
-            txtdate.setText(lbTime.getText());
-            txtaddress.setText(cus.getAddress());
-            txtcity.setText(cus.getCity());
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderManagementGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       if(cbbcustomer.getSelectedItem().equals("")){
+           return;
+       }else{
+           String info = cbbcustomer.getSelectedItem().toString();
+        int id = Character.getNumericValue(info.charAt(0)); 
+        try {
+             CustomerBLL cusBLL = new CustomerBLL();        
+             Customers cus = cusBLL.getCustomer(id);
+             txtdate.setText(lbTime.getText());
+             txtaddress.setText(cus.getAddress());
+             txtcity.setText(cus.getCity());
+         } catch (SQLException ex) {
+             Logger.getLogger(OrderManagementGUI.class.getName()).log(Level.SEVERE, null, ex);
+         }
        }
     }//GEN-LAST:event_cbbcustomerItemStateChanged
 
     private void btnoaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoaddActionPerformed
+        OrderDetail odd = new OrderDetail();
+        Vegetable veg = new Vegetable();
+        VegetableBLL vegbll = new VegetableBLL();
+        String vegselected = cbbvegetable.getSelectedItem().toString();
+        int vegid = Character.getNumericValue(vegselected.charAt(0));
+        try {
+            veg = vegbll.getVegetable(vegid);
+            odd.setVegetable(veg);
+            odd.setQuantity((int) spiquanity.getValue());
+            odd.setPrice(Float.parseFloat(lbprice.getText()));
 
+            if(listveg!= null){
+                for (int i = 0 ; i<listveg.size(); i++){
+                OrderDetail oddcheck = listveg.get(i);
+                if(oddcheck.getVegetable().getVegetableID() ==(odd.getVegetable().getVegetableID())){
+                    listveg.set(i,odd);
+                }else{
+                    listveg.add(odd);
+                }
+            }
+            }
+            loadDataToTableOrdersDetails(listveg);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderManagementGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnoaddActionPerformed
 
     private void cbbcustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbcustomerActionPerformed
@@ -810,15 +853,8 @@ public class OrderManagementGUI extends javax.swing.JFrame {
                     editcus     .setText(odCRUD.getCustomerID()+" - "+ odCRUD.getCustomer().getFullname());
                     tanote      .setText(odCRUD.getNote());
                 }
-                List<OrderDetail> list = odbll.findbyID(id);
-                tblvegetablemodel.setRowCount(0);
-                for (OrderDetail it : list) {
-                tblvegetablemodel.addRow(new Object[]{
-                    it.getVegetable().getVegetableID(),  it.getVegetable().getVegetable_Name()
-                        ,it.getVegetable().getPrice(), it.getQuantity(), it.getVegetable().getUnit()
-              });
-            }
-            tblvegetablemodel.fireTableDataChanged();
+                listveg = odbll.findbyID(id);
+                loadDataToTableOrdersDetails(listveg);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -858,6 +894,31 @@ public class OrderManagementGUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btndeleteActionPerformed
+
+    private void cbbvegetableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbvegetableItemStateChanged
+       if(cbbvegetable.getSelectedItem().equals("")){
+           return;
+       }else{
+           String info = cbbvegetable.getSelectedItem().toString();
+           int id = Character.getNumericValue(info.charAt(0));
+           spiquanity.setValue(0);
+           try {
+                VegetableBLL vegBLL = new VegetableBLL();        
+                Vegetable veg = vegBLL.getVegetable(id);
+                txtcategory.setText(veg.getCategory().getName());
+                txtprice.setText(String.valueOf(veg.getPrice()));
+                txtunit.setText(veg.getUnit());
+                }catch (SQLException ex) {
+                 Logger.getLogger(OrderManagementGUI.class.getName()).log(Level.SEVERE, null, ex);
+             }
+       }
+    }//GEN-LAST:event_cbbvegetableItemStateChanged
+
+    private void spiquanityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spiquanityStateChanged
+        int quality =  (int) spiquanity.getValue();
+        float price = Float.parseFloat(txtprice.getText().toString()) * quality;
+        lbprice.setText(String.valueOf(price));
+    }//GEN-LAST:event_spiquanityStateChanged
     
     /**
      * @param args the command line arguments
@@ -902,7 +963,6 @@ public class OrderManagementGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnodelete;
     private javax.swing.JButton btnofind;
     private javax.swing.JButton btnoreset;
-    private javax.swing.JButton btnoupdate;
     private javax.swing.JButton btnreset;
     private javax.swing.JButton btnsave;
     private javax.swing.JButton btnupdate;

@@ -41,6 +41,7 @@ public class Vegetable {
     @Column
     private float Price;
     
+    
     @OneToMany (fetch = FetchType.LAZY, targetEntity = OrderDetail.class)
     private List<OrderDetail> listorder;
     
