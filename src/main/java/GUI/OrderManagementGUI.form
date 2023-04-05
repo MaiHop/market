@@ -483,7 +483,8 @@
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Group type="102" attributes="0">
                                               <Component id="btnoadd" min="-2" pref="90" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                                              <Component id="btnoupdate" min="-2" pref="90" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
@@ -582,6 +583,7 @@
                               <Component id="btnodelete" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnoreset" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="btnoupdate" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="96" max="32767" attributes="0"/>
                   </Group>
@@ -816,6 +818,17 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="More"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnoupdate">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="SansSerif" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Update"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnoupdateActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

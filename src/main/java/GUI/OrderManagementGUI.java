@@ -220,6 +220,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         btnodelete = new javax.swing.JButton();
         btnoreset = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btnoupdate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -540,6 +541,14 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jButton1.setText("More");
 
+        btnoupdate.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnoupdate.setText("Update");
+        btnoupdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnoupdateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -575,7 +584,8 @@ public class OrderManagementGUI extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(btnoadd, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(160, 160, 160))
+                                        .addGap(70, 70, 70)
+                                        .addComponent(btnoupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -647,7 +657,8 @@ public class OrderManagementGUI extends javax.swing.JFrame {
                     .addComponent(btnoadd)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnodelete)
-                        .addComponent(btnoreset)))
+                        .addComponent(btnoreset))
+                    .addComponent(btnoupdate))
                 .addGap(0, 96, Short.MAX_VALUE))
         );
 
@@ -786,17 +797,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
             odd.setVegetable(veg);
             odd.setQuantity((int) spiquanity.getValue());
             odd.setPrice(Float.parseFloat(lbprice.getText()));
-
-            if(listveg!= null){
-                for (int i = 0 ; i<listveg.size(); i++){
-                OrderDetail oddcheck = listveg.get(i);
-                if(oddcheck.getVegetable().getVegetableID() ==(odd.getVegetable().getVegetableID())){
-                    listveg.set(i,odd);
-                }else{
-                    listveg.add(odd);
-                }
-            }
-            }
+            listveg.add(odd);
             loadDataToTableOrdersDetails(listveg);
         } catch (SQLException ex) {
             Logger.getLogger(OrderManagementGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -919,6 +920,10 @@ public class OrderManagementGUI extends javax.swing.JFrame {
         float price = Float.parseFloat(txtprice.getText().toString()) * quality;
         lbprice.setText(String.valueOf(price));
     }//GEN-LAST:event_spiquanityStateChanged
+
+    private void btnoupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoupdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnoupdateActionPerformed
     
     /**
      * @param args the command line arguments
@@ -963,6 +968,7 @@ public class OrderManagementGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnodelete;
     private javax.swing.JButton btnofind;
     private javax.swing.JButton btnoreset;
+    private javax.swing.JButton btnoupdate;
     private javax.swing.JButton btnreset;
     private javax.swing.JButton btnsave;
     private javax.swing.JButton btnupdate;

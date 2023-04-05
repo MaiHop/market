@@ -76,21 +76,21 @@ public class OrdersDAL {
         session.getTransaction().commit();
         return true;
     }
-    public static void main(String[] args) throws ParseException {
-        
-        try{
-            factory = new Configuration().configure().buildSessionFactory();
-           
-        }catch(Throwable ex){
-            System.err.println("Failed to create sessionFactory object."+ ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-        
-        OrdersDAL dal = new OrdersDAL();
-        List<OrderDetail> odd = dal.getOrder(1).getListorder();
-        for(OrderDetail d : odd){
-           
-            System.out.println("DAL.OrdersDAL.main()"+ d.getVegetable().getVegetable_Name());
-        }
-}
+//    public static void main(String[] args) throws ParseException {
+//        
+//        try{
+//            factory = new Configuration().configure().buildSessionFactory();
+//           
+//        }catch(Throwable ex){
+//            System.err.println("Failed to create sessionFactory object."+ ex);
+//            throw new ExceptionInInitializerError(ex);
+//        }
+//        
+//        OrdersDAL dal = new OrdersDAL();
+//        List<OrderDetail> odd = dal.getOrder(1).getListorder();
+//        for(OrderDetail d : odd){
+//           
+//            System.out.println("DAL.OrdersDAL.main()"+ d.getVegetable().getVegetable_Name());
+//        }
+//}
 }

@@ -42,12 +42,10 @@ public class OrderDetail implements Serializable{
     private float Price;
     
     @ManyToOne(fetch = FetchType.EAGER, optional=false, cascade = CascadeType.REMOVE)
-    @MapsId("OrderID")
     @JoinColumn(name = "OrderID", nullable = false, foreignKey = @ForeignKey(name="fk_order"),insertable=false, updatable=false)
     private Orders orders;
     
     @OneToOne(fetch = FetchType.EAGER, optional=false)
-    @MapsId("VegetableID")
     @JoinColumn(name = "VegetableID", nullable = false, foreignKey = @ForeignKey(name="fk_vegetable"),insertable=false, updatable=false)
     private Vegetable vegetable;
     
