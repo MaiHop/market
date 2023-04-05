@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -42,7 +43,7 @@ public class Vegetable {
     private float Price;
     
     
-    @OneToMany (fetch = FetchType.LAZY, targetEntity = OrderDetail.class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = OrderDetail.class)
     private List<OrderDetail> listorder;
     
     @ManyToOne(fetch = FetchType.EAGER, optional=false)

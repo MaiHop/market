@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -45,7 +46,7 @@ public class OrderDetail implements Serializable{
     @JoinColumn(name = "OrderID", nullable = false, foreignKey = @ForeignKey(name="fk_order"),insertable=false, updatable=false)
     private Orders orders;
     
-    @ManyToOne(fetch = FetchType.EAGER, optional=false)
+    @OneToOne(fetch = FetchType.EAGER, optional=false)
     @MapsId("VegetableID")
     @JoinColumn(name = "VegetableID", nullable = false, foreignKey = @ForeignKey(name="fk_vegetable"),insertable=false, updatable=false)
     private Vegetable vegetable;
