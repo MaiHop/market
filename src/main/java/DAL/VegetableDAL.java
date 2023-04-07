@@ -38,7 +38,15 @@ public class VegetableDAL {
         session.getTransaction().commit();
         return vegetable;
     }
- 
+    public List findbyname(String name ) {
+        List<Vegetable> vegetable;
+        session.beginTransaction();
+        String hql = "FROM Vegetable AS v WHERE v.Vegetable_Name LIKE :name";
+        vegetable = session.createQuery(hql)
+                .setParameter("name","%" + name + "%" ).list();
+        session.getTransaction().commit();
+        return vegetable;
+    }
     public Vegetable getVegetable(int VegetableID)
     {
         session.beginTransaction();

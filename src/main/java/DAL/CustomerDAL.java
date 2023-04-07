@@ -63,7 +63,7 @@ public class CustomerDAL {
         session.beginTransaction();
         session.update(c);
         session.getTransaction().commit();
-        return true;
+        return false;
     }
     public boolean deleteCustomers(Customers c)
     {
@@ -82,8 +82,14 @@ public class CustomerDAL {
             throw new ExceptionInInitializerError(ex);
         }
          CustomerDAL odDAL = new CustomerDAL();
-         char id = 1;
-         Customers customers =  odDAL.getCustomer((char)id);
+         Customers c = new Customers();
+         c.setCustomerID(10);
+         c.setFullname("dsdfs");
+         c.setPassword("afsada");
+         c.setAddress("222222");
+         c.setCity("BinhDuong");
+         odDAL.updateCustomers(c);
+         Customers customers =  odDAL.getCustomer(10);
          //for(Iterator iterator = customers.iterator(); iterator.hasNext();){
                 //Customers cate = (Customers) iterator.next();
                 System.out.println("CatagoryID: "+ customers.getCustomerID());

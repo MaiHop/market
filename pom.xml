@@ -42,6 +42,11 @@
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE125</version>
         </dependency>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.3.2</version>
+        </dependency>
     </dependencies>
     <name>market3_git</name>
 </project>

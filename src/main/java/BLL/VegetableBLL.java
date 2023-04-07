@@ -39,6 +39,14 @@ public class VegetableBLL {
 
         return list.subList(from, Math.min(to, size));
     }
+    public List findbyname(String name) throws SQLException {
+        List list = new ArrayList();
+
+        list = vegetable.findbyname(name);
+
+        return list;
+
+    }
     public Vegetable getVegetable(int vegetableID) throws SQLException
     {
         Vegetable o = vegetable.getVegetable(vegetableID);
@@ -53,7 +61,7 @@ public class VegetableBLL {
         boolean result = vegetable.updateVegetable(v);
         return result;
     }
-    public boolean deleteCustomer(Vegetable v) throws SQLException {
+    public boolean deleteVegetable(Vegetable v) throws SQLException {
         boolean result = vegetable.deleteVegetable(v);
         return result;
     }

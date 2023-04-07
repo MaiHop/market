@@ -10,6 +10,7 @@ import static java.awt.image.ImageObserver.WIDTH;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import DTO.Orders;
+import DTO.Category;
 import DTO.Vegetable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,9 @@ import javax.swing.JOptionPane;
  */
 public class VegetableGUI extends javax.swing.JFrame {
     private DefaultTableModel tblVegetableModel;
+    private Vegetable vegetabledelete = new Vegetable();
+    private VegetableBLL vegetablebll = new VegetableBLL();
+    private Vegetable vegetableUpdate = new Vegetable();
     /**
      * Creates new form Vegetable
      */
@@ -31,7 +35,7 @@ public class VegetableGUI extends javax.swing.JFrame {
     
     private void initTable() {
         tblVegetableModel = new DefaultTableModel();
-        tblVegetableModel.setColumnIdentifiers(new String[] {"VegetableID","Vegetable Name","Category","Unit","Amount","Price"});
+        tblVegetableModel.setColumnIdentifiers(new String[] {"VegetableID","CatagoryID","Catagory Name","Vegetable Name","Unit","Amount","Price"});
         tblVegetable.setModel(tblVegetableModel);
     }
     
@@ -42,7 +46,7 @@ public class VegetableGUI extends javax.swing.JFrame {
             tblVegetableModel.setRowCount(0);
             for (DTO.Vegetable it : list) {
                 tblVegetableModel.addRow(new Object[]{
-                    it.getVegetableID(),  it.getVegetable_Name(),it.getCategory().getName(),
+                    it.getVegetableID(),it.getCatagoryID(),it.getCategory().getName(),it.getVegetable_Name(),
                     it.getUnit(), it.getAmount(), it.getPrice()
               });
             }
@@ -77,13 +81,32 @@ public class VegetableGUI extends javax.swing.JFrame {
         txtUnit = new javax.swing.JTextField();
         txtAmount = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtVegeID = new javax.swing.JTextField();
+        txtCataID = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel5.setText("Search :");
 
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSearchKeyTyped(evt);
+            }
+        });
+
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         btnRefresh.setText("Refresh");
         btnRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -124,6 +147,11 @@ public class VegetableGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblVegetable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVegetableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblVegetable);
 
         jLabel1.setText("Vegetable Name :");
@@ -140,7 +168,7 @@ public class VegetableGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Vegetable ID: ");
+        jLabel6.setText("Catagory ID: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,7 +190,7 @@ public class VegetableGUI extends javax.swing.JFrame {
                                 .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtVegeID, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(txtCataID, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                             .addComponent(txtVege_Name)
                             .addComponent(txtUnit)
                             .addComponent(txtAmount)
@@ -201,7 +229,7 @@ public class VegetableGUI extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(txtVegeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCataID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -212,8 +240,7 @@ public class VegetableGUI extends javax.swing.JFrame {
                             .addComponent(btnDelete)
                             .addComponent(btnUpdate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
@@ -230,7 +257,8 @@ public class VegetableGUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -238,6 +266,7 @@ public class VegetableGUI extends javax.swing.JFrame {
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:
+        txtCataID.setText("");
         txtVege_Name.setText("");
         txtUnit.setText("");
         txtAmount.setText("");
@@ -251,44 +280,76 @@ public class VegetableGUI extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        try {
-            VegetableBLL vgBLL = new VegetableBLL();
-            Vegetable vg = new Vegetable();
-            vg.setVegetableID(Integer.parseInt(txtVegeID.getText()));
-            vg.setVegetable_Name(txtVege_Name.getText());
-            vg.setUnit(txtUnit.getText());
-            vg.setAmount(Integer.parseInt(txtAmount.getText()));
-            vg.setPrice(Float.parseFloat(txtPrice.getText()));
-            if(vgBLL.deleteCustomer(vg)){
-                 JOptionPane.showMessageDialog(rootPane, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 LoadVegetableTable();
-            }else{
-                 JOptionPane.showMessageDialog(rootPane, "Xóa thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//        try {
+//  
+//            Vegetable vg = new Vegetable();
+//            vg.setCatagoryID(Integer.parseInt(txtCataID.getText()));
+//            vg.setVegetable_Name(txtVege_Name.getText());
+//            vg.setUnit(txtUnit.getText());
+//            vg.setAmount(Integer.parseInt(txtAmount.getText()));
+//            vg.setPrice(Float.parseFloat(txtPrice.getText()));
+//            if(vgBLL.deleteVegetable(vg)){
+//                 JOptionPane.showMessageDialog(rootPane, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//                 LoadVegetableTable();
+//            }else{
+//                 JOptionPane.showMessageDialog(rootPane, "Xóa thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            }
+try {
+            if(JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa không?", "Hỏi"
+            , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION){
+            return;
+            }
+            if(vegetablebll.deleteVegetable(vegetabledelete)){
+                JOptionPane.showMessageDialog(null, "Xóa thành công");
+                LoadVegetableTable();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Xóa thất bại");
             }
         } catch (Exception e) {
-            Logger.getLogger(Vegetable.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(VegetableGUI.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        try {
-            VegetableBLL vgBLL = new VegetableBLL();
+//        try {
+//            VegetableBLL vgBLL = new VegetableBLL();
+//            Vegetable vg = new Vegetable();
+//            vg.setCatagoryID(Integer.parseInt(txtCataID.getText()));
+//            vg.setVegetable_Name(txtVege_Name.getText());
+//            vg.setUnit(txtUnit.getText());
+//            vg.setAmount(Integer.parseInt(txtAmount.getText()));
+//            vg.setPrice(Float.parseFloat(txtPrice.getText()));
+//            if(vgBLL.updateVegetable(vg)){
+//                 JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//                 LoadVegetableTable();
+//            }else{
+//                 JOptionPane.showMessageDialog(rootPane, "Cập nhật thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            }
+    try {
             Vegetable vg = new Vegetable();
-            vg.setVegetableID(Integer.parseInt(txtVegeID.getText()));
+            vg = this.vegetableUpdate;
+            vg.setCatagoryID(Integer.parseInt(txtCataID.getText()));
             vg.setVegetable_Name(txtVege_Name.getText());
             vg.setUnit(txtUnit.getText());
             vg.setAmount(Integer.parseInt(txtAmount.getText()));
             vg.setPrice(Float.parseFloat(txtPrice.getText()));
-            if(vgBLL.updateVegetable(vg)){
-                 JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 LoadVegetableTable();
-            }else{
-                 JOptionPane.showMessageDialog(rootPane, "Cập nhật thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            
+            if(JOptionPane.showConfirmDialog(this, "Bạn có muốn cập nhật không?", "Hỏi"
+            , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION){
+            return;
+            }
+            if(vegetablebll.updateVegetable(vegetableUpdate)){
+                JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                LoadVegetableTable();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Cập nhật thất bại");
             }
         } catch (Exception e) {
-            Logger.getLogger(Vegetable.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(VegetableGUI.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -298,11 +359,12 @@ public class VegetableGUI extends javax.swing.JFrame {
         try {
             VegetableBLL vgBLL = new VegetableBLL();
             Vegetable vg = new Vegetable();
-            vg.setVegetableID(Integer.parseInt(txtVegeID.getText()));
+            vg.setCatagoryID(Integer.parseInt(txtCataID.getText()));
             vg.setVegetable_Name(txtVege_Name.getText());
             vg.setUnit(txtUnit.getText());
             vg.setAmount(Integer.parseInt(txtAmount.getText()));
             vg.setPrice(Float.parseFloat(txtPrice.getText()));
+            vg.setImage("");
             if(vgBLL.addVegetable(vg)){
                  JOptionPane.showMessageDialog(rootPane, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                  LoadVegetableTable();
@@ -310,10 +372,86 @@ public class VegetableGUI extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(rootPane, "Thêm thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
-            Logger.getLogger(Vegetable.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(VegetableGUI.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void tblVegetableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVegetableMouseClicked
+        // TODO add your handling code here:
+        try {
+            int row = tblVegetable.getSelectedRow();
+            if(row >= 0){         
+                int id = (Integer) tblVegetable.getValueAt(row, 0);
+                VegetableBLL bll = new VegetableBLL();
+                Vegetable vg = bll.getVegetable(id);
+                vegetabledelete = this.vegetablebll.getVegetable(id);
+                vegetableUpdate = this.vegetablebll.getVegetable(id);
+                txtCataID.setText(String.valueOf(vg.getCatagoryID()));
+                txtVege_Name.setText(vg.getVegetable_Name());
+                txtUnit.setText(vg.getUnit());
+                txtAmount.setText(String.valueOf(vg.getAmount()));
+                txtPrice.setText(String.valueOf(vg.getPrice()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    
+
+    }//GEN-LAST:event_tblVegetableMouseClicked
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        try{
+            VegetableBLL bll = new VegetableBLL();
+            List<Vegetable> list = bll.findbyname((txtSearch.getText()));
+
+            if(list.isEmpty()){
+                JOptionPane.showMessageDialog(this,"Sản phẩm không tồn tại" , "Cảnh báo", JOptionPane.ERROR_MESSAGE);
+            }else{
+                for(Vegetable vg : list){
+                    txtCataID.setText(String.valueOf(vg.getCatagoryID()));
+                    txtVege_Name.setText(vg.getVegetable_Name());
+                    txtUnit.setText(vg.getUnit());
+                    txtAmount.setText(String.valueOf(vg.getAmount()));
+                    txtPrice.setText(String.valueOf(vg.getPrice()));
+                    LoadVegetableTable();
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,"Tên người dùng không tồn tại" , "Cảnh báo", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void txtSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyTyped
+        // TODO add your handling code here
+    
+    }//GEN-LAST:event_txtSearchKeyTyped
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // TODO add your handling code here:
+        try {
+            VegetableBLL bll = new VegetableBLL();
+            List<Vegetable> list = bll.findbyname((txtSearch.getText()));
+
+            initTable();
+            for(Vegetable it : list){
+                tblVegetableModel.addRow(new Object[]{
+                    it.getVegetableID(),it.getCatagoryID(),it.getCategory().getName(),it.getVegetable_Name(),
+                    it.getUnit(), it.getAmount(), it.getPrice()
+              });
+        }
+        } catch (Exception e) {
+                e.printStackTrace();
+            JOptionPane.showMessageDialog(this,"Tên người dùng không tồn tại" , "Cảnh báo", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -365,10 +503,10 @@ public class VegetableGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblVegetable;
     private javax.swing.JTextField txtAmount;
+    private javax.swing.JTextField txtCataID;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtUnit;
-    private javax.swing.JTextField txtVegeID;
     private javax.swing.JTextField txtVege_Name;
     // End of variables declaration//GEN-END:variables
 }

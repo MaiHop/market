@@ -11,6 +11,7 @@ import DTO.OrderDetail;
 import DTO.Orders;
 import DTO.Vegetable;
 import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateError;
@@ -19,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 /**
@@ -54,18 +56,35 @@ public class OrdersDetailDAL {
         session.getTransaction().commit();
         return o;
     }
-    public static void main(String[] args) {
+    public boolean addorUpdateOrderDetail(OrderDetail od)
+    {
+        session.beginTransaction();
+        session.saveOrUpdate(od);
+        session.getTransaction().commit();
+        return true;
+    }
+    public boolean deleteOrderDetail(OrderDetail od)
+    {
+        session.beginTransaction();
+        String hql = "DELETE FROM OrderDetail "  + "WHERE OrderID  = :orderID ";
+        Query query = session.createQuery(hql);
+        query.setParameter("orderID", od.getOrderID());
+        query.executeUpdate();
+        session.getTransaction().commit();
+        return true;
+    }
+    public static void main(String[] args) throws ParseException {
         
         try{
             factory = new Configuration().configure().buildSessionFactory();
+           
         }catch(Throwable ex){
             System.err.println("Failed to create sessionFactory object."+ ex);
             throw new ExceptionInInitializerError(ex);
         }
-        OrdersDAL dal = new OrdersDAL();
-        Orders o = dal.getOrder(0);
-        List odd = o.getListorder();
-        System.out.println("DAL.OrdersDetailDAL.main():  " +odd.toString());
+        OrdersDetailDAL od = new OrdersDetailDAL();
+        List<OrderDetail> oddal = od.loadOrderDetail();
+        ;
         
-    }
+}
 }

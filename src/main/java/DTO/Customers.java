@@ -42,6 +42,6 @@ public class Customers {
     private String City;
     
     @OneToMany (fetch = FetchType.LAZY, targetEntity=Orders.class)
-    
+    @JoinColumn(name = "OrderID", nullable = false, foreignKey = @ForeignKey(name="fk_customer"),insertable=false, updatable=false)
     private List<Orders> orders;
 }

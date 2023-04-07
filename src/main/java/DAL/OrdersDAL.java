@@ -9,8 +9,11 @@ package DAL;
 import DTO.Customers;
 import DTO.OrderDetail;
 import DTO.Orders;
+import DTO.Vegetable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -42,9 +45,9 @@ public class OrdersDAL {
     public List findbyDate(Date date ) {
         List<Orders> orders;
         session.beginTransaction();
-        String hql = "FROM Orders AS o WHERE o.Date LIKE :date";
+        String hql = "FROM Orders AS o WHERE o.Date = :date";
         orders = session.createQuery(hql)
-                .setParameter("date","%" + date + "%" ).list();
+                .setParameter("date", date ).list();
         session.getTransaction().commit();
         return orders;
     }
@@ -62,35 +65,35 @@ public class OrdersDAL {
         session.getTransaction().commit();
         return true;
     }
-    public boolean updateOrders(Orders c)
+    public boolean updateOrders(Orders o)
     {
         session.beginTransaction();
-        session.update(c);
+        session.update(o);
         session.getTransaction().commit();
         return true;
     }
-    public boolean deleteOrders(Orders c)
+    public boolean deleteOrders(Orders o)
     {
         session.beginTransaction();
-        session.delete(c);
+        session.delete(o);
         session.getTransaction().commit();
         return true;
     }
-//    public static void main(String[] args) throws ParseException {
-//        
-//        try{
-//            factory = new Configuration().configure().buildSessionFactory();
-//           
-//        }catch(Throwable ex){
-//            System.err.println("Failed to create sessionFactory object."+ ex);
-//            throw new ExceptionInInitializerError(ex);
-//        }
-//        
-//        OrdersDAL dal = new OrdersDAL();
-//        List<OrderDetail> odd = dal.getOrder(1).getListorder();
-//        for(OrderDetail d : odd){
-//           
-//            System.out.println("DAL.OrdersDAL.main()"+ d.getVegetable().getVegetable_Name());
-//        }
-//}
+    public static void main(String[] args) throws ParseException {
+        
+        try{
+            factory = new Configuration().configure().buildSessionFactory();
+           
+        }catch(Throwable ex){
+            System.err.println("Failed to create sessionFactory object."+ ex);
+            throw new ExceptionInInitializerError(ex);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        OrdersDAL dal =new OrdersDAL();
+        List<Orders> od = dal.findbyDate(sdf.parse("2023-04-06"));
+        for(Orders odd : od){
+            System.out.println("DAL.OrdersDAL.main(): "+odd.getDate());
+        }
+        
+    }
 }

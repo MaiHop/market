@@ -43,6 +43,7 @@ public class Vegetable {
     
     
     @OneToMany (fetch = FetchType.LAZY, targetEntity = OrderDetail.class)
+    @JoinColumn(name = "OrderID")
     private List<OrderDetail> listorder;
     
     @ManyToOne(fetch = FetchType.EAGER, optional=false)
