@@ -63,7 +63,7 @@ public class CustomerDAL {
         session.beginTransaction();
         session.update(c);
         session.getTransaction().commit();
-        return false;
+        return true;
     }
     public boolean deleteCustomers(Customers c)
     {

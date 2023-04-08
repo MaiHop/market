@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import BLL.CategoryBLL;
 import BLL.CustomerBLL;
 import BLL.OrderBLL;
 import BLL.OrdersDetailBLL;
@@ -196,10 +197,10 @@ public class OrderManagementGUI extends javax.swing.JFrame{
             List<String> temp2 = new ArrayList<String>();
             List<String> listcate_name = new ArrayList<String>();
             List<String> listunit = new ArrayList<String>();
-            cbbcategory.addItem("null");
-            cbbunit.addItem("null");
-            cbbamount.addItem("null");
-            cbbprice.addItem("null");
+            cbbcategory.addItem("");
+            cbbunit.addItem("");
+            cbbamount.addItem("");
+            cbbprice.addItem("");
             for (Vegetable vg : list) {
                 temp1.add(vg.getCategory().getName());
                 temp2.add(vg.getUnit());
@@ -219,7 +220,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
             cbbamount.addItem("Amount <30");
             cbbamount.addItem("Amount >30");
             cbbamount.addItem("Amount >30");
-            cbbamount.addItem("30<=Amount<=100");
+            cbbamount.addItem("30<= Amount <=100");
             cbbamount.addItem("Amount >100");
             cbbprice.addItem("Descending");
             cbbprice.addItem("Ascending");
@@ -349,11 +350,6 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                 cbbcategoryItemStateChanged(evt);
             }
         });
-        cbbcategory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbcategoryActionPerformed(evt);
-            }
-        });
 
         jLabel21.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel21.setText("Unit:");
@@ -379,11 +375,6 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                 cbbamountItemStateChanged(evt);
             }
         });
-        cbbamount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbamountActionPerformed(evt);
-            }
-        });
 
         jLabel23.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel23.setText("Price:");
@@ -394,14 +385,14 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                 cbbpriceItemStateChanged(evt);
             }
         });
-        cbbprice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbpriceActionPerformed(evt);
-            }
-        });
 
         btnfilter.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         btnfilter.setText("Filter");
+        btnfilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnfilterActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -457,6 +448,11 @@ public class OrderManagementGUI extends javax.swing.JFrame{
 
         btnsearchveg.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         btnsearchveg.setText("Search");
+        btnsearchveg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsearchvegActionPerformed(evt);
+            }
+        });
 
         txtkeyword.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtkeyword.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1351,10 +1347,6 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbcategoryItemStateChanged
 
-    private void cbbcategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbcategoryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbbcategoryActionPerformed
-
     private void cbbunitItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbunitItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbunitItemStateChanged
@@ -1367,20 +1359,26 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbamountItemStateChanged
 
-    private void cbbamountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbamountActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbbamountActionPerformed
-
     private void cbbpriceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbpriceItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbpriceItemStateChanged
 
-    private void cbbpriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbpriceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbbpriceActionPerformed
-
     private void txtkeywordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtkeywordKeyReleased
+        try {
+            VegetableBLL bll = new VegetableBLL();
+            List<Vegetable> list = bll.findbyname((txtkeyword.getText()));
 
+            initTableVegetables();
+            for (Vegetable it : list) {
+                tblvegetableselectmodel.addRow(new Object[]{
+                    it.getVegetableID(),  it.getVegetable_Name(),it.getCategory().getName(),
+                    it.getUnit(), it.getAmount(), it.getPrice()
+              });
+            }
+            tblvegetableselectmodel.fireTableDataChanged();
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
     }//GEN-LAST:event_txtkeywordKeyReleased
 
     private void btnofindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnofindActionPerformed
@@ -1401,6 +1399,55 @@ public class OrderManagementGUI extends javax.swing.JFrame{
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnofindActionPerformed
+
+    private void btnsearchvegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchvegActionPerformed
+        try {
+            VegetableBLL bll = new VegetableBLL();
+            List<Vegetable> list = bll.findbyname((txtkeyword.getText()));
+
+            initTableVegetables();
+            for (Vegetable it : list) {
+                tblvegetableselectmodel.addRow(new Object[]{
+                    it.getVegetableID(),  it.getVegetable_Name(),it.getCategory().getName(),
+                    it.getUnit(), it.getAmount(), it.getPrice()
+              });
+            }
+            tblvegetableselectmodel.fireTableDataChanged();
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnsearchvegActionPerformed
+
+    private void btnfilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfilterActionPerformed
+        try{
+            CategoryBLL catebll =new CategoryBLL();
+            VegetableBLL vegbll = new VegetableBLL();
+            String name = txtkeyword.getText();
+            String cataname = cbbcategory.getSelectedItem().toString();
+            String cateid = "";
+            if(!cataname.equals("")){
+                cateid = String.valueOf(catebll.findbyname(cataname).getCatagoryID());
+            }
+            String unit = cbbunit.getSelectedItem().toString();
+            String amount = cbbamount.getSelectedItem().toString();
+            if(amount.equals("30<= Amount <=100")){
+                amount = "Amount BETWEEN 30 AND 100";
+            }
+            String price = cbbprice.getSelectedItem().toString();
+            List<Vegetable> vegfilter = vegbll.filterVegetable(name, cateid, unit, amount, price);
+            initTableVegetables();
+            tblvegetableselectmodel.setRowCount(0);
+            for (Vegetable it : vegfilter) {
+                tblvegetableselectmodel.addRow(new Object[]{
+                    it.getVegetableID(),  it.getVegetable_Name(),it.getCategory().getName(),
+                    it.getUnit(), it.getAmount(), it.getPrice()
+              });
+            }
+            tblvegetableselectmodel.fireTableDataChanged();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnfilterActionPerformed
     
     /**
      * @param args the command line arguments

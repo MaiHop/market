@@ -316,10 +316,8 @@ public class CustomersGUI extends javax.swing.JFrame {
             if(customersBLL.updateCustomer(oc)){
                 JOptionPane.showMessageDialog(null, "Update thành công");
                 LoadCustomersTable();    
-            }
-            else{
+            }else{
                 JOptionPane.showMessageDialog(null, "Update thất bại");
-                LoadCustomersTable();  
             }
         } catch (Exception e) {
             Logger.getLogger(CustomersGUI.class.getName()).log(Level.SEVERE, null, e);

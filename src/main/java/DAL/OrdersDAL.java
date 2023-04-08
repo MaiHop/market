@@ -51,6 +51,7 @@ public class OrdersDAL {
         session.getTransaction().commit();
         return orders;
     }
+    
     public Orders getOrder(int OrderID)
     {
         session.beginTransaction();
@@ -79,21 +80,21 @@ public class OrdersDAL {
         session.getTransaction().commit();
         return true;
     }
-    public static void main(String[] args) throws ParseException {
-        
-        try{
-            factory = new Configuration().configure().buildSessionFactory();
-           
-        }catch(Throwable ex){
-            System.err.println("Failed to create sessionFactory object."+ ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        OrdersDAL dal =new OrdersDAL();
-        List<Orders> od = dal.findbyDate(sdf.parse("2023-04-06"));
-        for(Orders odd : od){
-            System.out.println("DAL.OrdersDAL.main(): "+odd.getDate());
-        }
-        
-    }
+//    public static void main(String[] args) throws ParseException {
+//        
+//        try{
+//            factory = new Configuration().configure().buildSessionFactory();
+//           
+//        }catch(Throwable ex){
+//            System.err.println("Failed to create sessionFactory object."+ ex);
+//            throw new ExceptionInInitializerError(ex);
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        OrdersDAL dal =new OrdersDAL();
+//        List<Orders> od = dal.findbyDate(sdf.parse("2023-04-06"));
+//        for(Orders odd : od){
+//            System.out.println("DAL.OrdersDAL.main(): "+odd.get());
+//        }
+//        
+//    }
 }

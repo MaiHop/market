@@ -449,7 +449,7 @@ try {
         }
         } catch (Exception e) {
                 e.printStackTrace();
-            JOptionPane.showMessageDialog(this,"Tên người dùng không tồn tại" , "Cảnh báo", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Sản phẩm không tồn tại" , "Cảnh báo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_txtSearchKeyReleased
 

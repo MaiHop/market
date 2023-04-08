@@ -47,6 +47,12 @@ public class VegetableBLL {
         return list;
 
     }
+    public List filterVegetable(String name, String catagoryid, String unit, String amount, String price) throws SQLException {
+        List list = new ArrayList();
+        list = vegetable.filterVegetable(name, catagoryid, unit, amount, price);
+        return list;
+
+    }
     public Vegetable getVegetable(int vegetableID) throws SQLException
     {
         Vegetable o = vegetable.getVegetable(vegetableID);

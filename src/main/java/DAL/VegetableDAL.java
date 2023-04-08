@@ -8,9 +8,11 @@ import DTO.Vegetable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -30,11 +32,62 @@ public class VegetableDAL {
         return vegetable;
     }
     
-    public List filterVegetable() {
-        List<Object[]> vegetable;
+
+    public List filterVegetable(String name, String catagoryid, String unit, String amount, String price) {
+        List<Vegetable> vegetable;
         session.beginTransaction();
-        String hql = "FROM Vegetable AS v INNER JOIN v.Category";
-        vegetable = session.createQuery(hql).list();
+        String hql ="";
+        String amountquery = null;
+        if(!amount.equals("")){
+            amountquery = " AND " +amount;
+            if(price.equals("Descending")){
+            hql = "FROM Vegetable  "
+                + "WHERE Vegetable_Name LIKE :name "
+                + "AND str(CatagoryID) LIKE :catagoryid "
+                + "AND Unit LIKE :unit "
+                + amountquery
+                + " ORDER BY Price DESC  ";
+            }else if(price.equals("Ascending")){
+                hql = "FROM Vegetable  "
+                    + "WHERE Vegetable_Name LIKE :name "
+                    + "AND str(CatagoryID) LIKE :catagoryid "
+                    + "AND Unit LIKE :unit "
+                    + amountquery
+                    + " ORDER BY Price ASC  ";
+            }else{
+                hql = "FROM Vegetable  "
+                    + "WHERE Vegetable_Name LIKE :name "
+                    + "AND str(CatagoryID) LIKE :catagoryid "
+                    + "AND Unit LIKE :unit "
+                    + amountquery;
+            }         
+        }else{
+            if(price.equals("Descending")){
+            hql = "FROM Vegetable  "
+                + "WHERE Vegetable_Name LIKE :name "
+                + "AND str(CatagoryID) LIKE :catagoryid "
+                + "AND Unit LIKE :unit "
+                + amountquery
+                + " ORDER BY Price DESC  ";
+            }else if(price.equals("Ascending")){
+                hql = "FROM Vegetable  "
+                    + "WHERE Vegetable_Name LIKE :name "
+                    + "AND str(CatagoryID) LIKE :catagoryid "
+                    + "AND Unit LIKE :unit "
+                    + amountquery
+                    + " ORDER BY Price ASC  ";
+            }else{
+                hql = "FROM Vegetable  "
+                    + "WHERE Vegetable_Name LIKE :name "
+                    + "AND str(CatagoryID) LIKE :catagoryid "
+                    + "AND Unit LIKE :unit "
+                    + amountquery;
+            }     
+        }
+        vegetable = session.createQuery(hql)
+                .setParameter("name", "%" + name + "%")
+                .setParameter("catagoryid",  "%" + catagoryid + "%" )
+                .setParameter("unit", "%" + unit+ "%").list();
         session.getTransaction().commit();
         return vegetable;
     }
@@ -47,6 +100,7 @@ public class VegetableDAL {
         session.getTransaction().commit();
         return vegetable;
     }
+    
     public Vegetable getVegetable(int VegetableID)
     {
         session.beginTransaction();
@@ -75,6 +129,7 @@ public class VegetableDAL {
         session.getTransaction().commit();
         return true;
     }
+    
         public static void main(String[] args) {
         
         try{
@@ -84,17 +139,11 @@ public class VegetableDAL {
             throw new ExceptionInInitializerError(ex);
         }
         VegetableDAL odDAL = new VegetableDAL();
-        
-        Vegetable od = odDAL.getVegetable(1);
-        
-                //if(odd.getCategory().getName().contains("Fruit")){
-                    System.out.println("CatagoryID: "+ od.getCategory().getName());
-                    
-                    //System.out.println("Category Name: "+ odd.getCategory().getName());
-                //}
-                
-                //System.out.println("Description: "+ odd.getVegetable().getVegetableName());
-            
-            
+        List<Vegetable> od = odDAL.findbyname();
+        //List<Vegetable> od = odDAL.filterVegetable("o","1", "kg", "30<= Amount AND Amount <=100", "");       
+        for(Vegetable v : od){
+            System.out.println("ID: "+ v.getVegetableID());
+            System.out.println("Name: "+ v.getVegetable_Name());
+        }                        
     }
 }

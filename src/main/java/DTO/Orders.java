@@ -25,6 +25,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.ManyToAny;
@@ -53,12 +54,11 @@ public class Orders{
     
     @Column
     private String Note;
-    
+        
     @OneToMany (fetch = FetchType.LAZY, targetEntity = OrderDetail.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "OrderID", nullable = false, foreignKey = @ForeignKey(name="fk_customer"),insertable=false, updatable=false)
     private List<OrderDetail> listorder;
    
-    
     @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name = "CustomerID", nullable = false, foreignKey = @ForeignKey(name="fk_customer"),insertable=false, updatable=false)
     private Customers customer;

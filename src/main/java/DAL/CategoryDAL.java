@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 /**
@@ -36,7 +37,22 @@ public class CategoryDAL {
         session.getTransaction().commit();
         return category;
     }
-
+    
+    public Category findbyname(String name ) {
+        List<Category> category;
+        Category cateneed = null;
+        session.beginTransaction();
+        String hql = "FROM Category AS c WHERE c.Name LIKE :name";
+        category = session.createQuery(hql).setParameter("name","%"+ name +"%"  ).list();
+        for (Category c : category){
+            if(c.getName().equals(name)){
+                cateneed = c;
+            }
+        }
+        session.getTransaction().commit();
+        return cateneed;
+    }
+    
     public Category getCategory(int CategoryID)
     {
         session.beginTransaction();
@@ -44,6 +60,7 @@ public class CategoryDAL {
         session.getTransaction().commit();
         return c;
     }
+    
     public boolean addCategory(Category c)
     {
         session.beginTransaction();
@@ -51,6 +68,7 @@ public class CategoryDAL {
         session.getTransaction().commit();
         return true;
     }
+    
     public boolean updateCategory(Category c)
     {
         session.beginTransaction();
@@ -58,6 +76,7 @@ public class CategoryDAL {
         session.getTransaction().commit();
         return true;
     }
+    
     public boolean deleteCategory(Category c)
     {
         session.beginTransaction();
@@ -65,6 +84,7 @@ public class CategoryDAL {
         session.getTransaction().commit();
         return true;
     }
+    
     public static void main(String[] args) {
         
         try{
@@ -74,9 +94,8 @@ public class CategoryDAL {
             throw new ExceptionInInitializerError(ex);
         }   
         CategoryDAL category = new CategoryDAL();
-        List<Vegetable> v = category.getCategory(1).getListVegetable();
-        for(Vegetable vg : v){
-            System.out.println("Name: " + vg.getVegetable_Name());
-        }
+        Category v = category.findbyname("Fruit");
+        
+            System.out.println("Name: " + v.getCatagoryID());
     }
 }
