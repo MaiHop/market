@@ -12,9 +12,20 @@ import javax.swing.table.DefaultTableModel;
 import DTO.Orders;
 import DTO.Category;
 import DTO.Vegetable;
+import java.awt.Component;
+import java.awt.Image;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageReader;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 /**
  *
  * @author Admin
@@ -24,6 +35,7 @@ public class VegetableGUI extends javax.swing.JFrame {
     private Vegetable vegetabledelete = new Vegetable();
     private VegetableBLL vegetablebll = new VegetableBLL();
     private Vegetable vegetableUpdate = new Vegetable();
+    private File file;
     /**
      * Creates new form Vegetable
      */
@@ -35,10 +47,22 @@ public class VegetableGUI extends javax.swing.JFrame {
     
     private void initTable() {
         tblVegetableModel = new DefaultTableModel();
-        tblVegetableModel.setColumnIdentifiers(new String[] {"VegetableID","CatagoryID","Catagory Name","Vegetable Name","Unit","Amount","Price"});
+        tblVegetableModel.setColumnIdentifiers(new String[] {"Image","VegetableID","CatagoryID","Catagory Name","Vegetable Name","Unit","Amount","Price"});
         tblVegetable.setModel(tblVegetableModel);
+        tblVegetable.getTableHeader().setReorderingAllowed(false);
+        tblVegetable.getColumnModel().getColumn(0).setCellRenderer(new ImageRender());
+        tblVegetable.setRowHeight(150);
     }
     
+    private class ImageRender extends DefaultTableCellRenderer{
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+            byte[] bytes = (byte[]) value;
+            ImageIcon imageicon =  new ImageIcon(new ImageIcon(bytes).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+            setIcon(imageicon);
+            return this;
+        }
+    }
     private void LoadVegetableTable() {
         try {
             VegetableBLL bll = new  VegetableBLL();
@@ -46,7 +70,7 @@ public class VegetableGUI extends javax.swing.JFrame {
             tblVegetableModel.setRowCount(0);
             for (DTO.Vegetable it : list) {
                 tblVegetableModel.addRow(new Object[]{
-                    it.getVegetableID(),it.getCatagoryID(),it.getCategory().getName(),it.getVegetable_Name(),
+                    it.getImage(),it.getVegetableID(),it.getCatagoryID(),it.getCategory().getName(),it.getVegetable_Name(),
                     it.getUnit(), it.getAmount(), it.getPrice()
               });
             }
@@ -82,6 +106,9 @@ public class VegetableGUI extends javax.swing.JFrame {
         txtAmount = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtCataID = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        btnbrowse = new javax.swing.JButton();
+        lbimage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +197,18 @@ public class VegetableGUI extends javax.swing.JFrame {
 
         jLabel6.setText("Catagory ID: ");
 
+        jLabel11.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel11.setText("Image(<64KB):");
+
+        btnbrowse.setText("Browse");
+        btnbrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbrowseActionPerformed(evt);
+            }
+        });
+
+        lbimage.setBackground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -195,9 +234,15 @@ public class VegetableGUI extends javax.swing.JFrame {
                             .addComponent(txtUnit)
                             .addComponent(txtAmount)
                             .addComponent(txtPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                        .addGap(85, 85, 85)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(68, 68, 68)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearch))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnRefresh)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnAdd)
@@ -205,14 +250,13 @@ public class VegetableGUI extends javax.swing.JFrame {
                                 .addComponent(btnDelete)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnUpdate))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(85, 85, 85)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbimage, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnSearch)))
-                        .addGap(0, 104, Short.MAX_VALUE)))
+                                .addComponent(btnbrowse)))
+                        .addGap(0, 431, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -233,13 +277,23 @@ public class VegetableGUI extends javax.swing.JFrame {
                         .addGap(9, 9, 9)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRefresh)
                             .addComponent(btnAdd)
                             .addComponent(btnDelete)
                             .addComponent(btnUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(btnbrowse))
+                                .addGap(0, 128, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(lbimage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -336,7 +390,7 @@ try {
             vg.setUnit(txtUnit.getText());
             vg.setAmount(Integer.parseInt(txtAmount.getText()));
             vg.setPrice(Float.parseFloat(txtPrice.getText()));
-            
+            vg.setImage(Files.readAllBytes(this.file.toPath()));
             if(JOptionPane.showConfirmDialog(this, "Bạn có muốn cập nhật không?", "Hỏi"
             , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION){
             return;
@@ -364,7 +418,7 @@ try {
             vg.setUnit(txtUnit.getText());
             vg.setAmount(Integer.parseInt(txtAmount.getText()));
             vg.setPrice(Float.parseFloat(txtPrice.getText()));
-            vg.setImage("");
+            vg.setImage(Files.readAllBytes(this.file.toPath()));
             if(vgBLL.addVegetable(vg)){
                  JOptionPane.showMessageDialog(rootPane, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                  LoadVegetableTable();
@@ -382,7 +436,7 @@ try {
         try {
             int row = tblVegetable.getSelectedRow();
             if(row >= 0){         
-                int id = (Integer) tblVegetable.getValueAt(row, 0);
+                int id = (Integer) tblVegetable.getValueAt(row, 1);
                 VegetableBLL bll = new VegetableBLL();
                 Vegetable vg = bll.getVegetable(id);
                 vegetabledelete = this.vegetablebll.getVegetable(id);
@@ -392,6 +446,7 @@ try {
                 txtUnit.setText(vg.getUnit());
                 txtAmount.setText(String.valueOf(vg.getAmount()));
                 txtPrice.setText(String.valueOf(vg.getPrice()));
+                lbimage.setIcon(new ImageIcon(new ImageIcon(vg.getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -416,6 +471,7 @@ try {
                     txtUnit.setText(vg.getUnit());
                     txtAmount.setText(String.valueOf(vg.getAmount()));
                     txtPrice.setText(String.valueOf(vg.getPrice()));
+                    lbimage.setIcon(new ImageIcon(new ImageIcon(vg.getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT))); 
                     LoadVegetableTable();
                 }
             }
@@ -443,7 +499,7 @@ try {
             initTable();
             for(Vegetable it : list){
                 tblVegetableModel.addRow(new Object[]{
-                    it.getVegetableID(),it.getCatagoryID(),it.getCategory().getName(),it.getVegetable_Name(),
+                    it.getImage(),it.getVegetableID(),it.getCatagoryID(),it.getCategory().getName(),it.getVegetable_Name(),
                     it.getUnit(), it.getAmount(), it.getPrice()
               });
         }
@@ -452,6 +508,19 @@ try {
             JOptionPane.showMessageDialog(this,"Sản phẩm không tồn tại" , "Cảnh báo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void btnbrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbrowseActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setMultiSelectionEnabled(false);
+        if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            this.file = chooser.getSelectedFile();
+            String path = file.getAbsolutePath();
+            //txtAmount.setText(path);
+            ImageIcon imageicon = new ImageIcon(path);
+            Image image = imageicon.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT);
+            lbimage.setIcon(new ImageIcon(image));
+        }
+    }//GEN-LAST:event_btnbrowseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -494,13 +563,16 @@ try {
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnbrowse;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbimage;
     private javax.swing.JTable tblVegetable;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtCataID;

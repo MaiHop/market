@@ -15,13 +15,16 @@ import DTO.Customers;
 import DTO.OrderDetail;
 import DTO.Orders;
 import DTO.Vegetable;
+import java.awt.Component;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import static java.awt.image.ImageObserver.WIDTH;
+import java.io.File;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.NumberFormat;
@@ -37,12 +40,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
@@ -61,10 +67,9 @@ public class OrderManagementGUI extends javax.swing.JFrame{
     private NumberFormat currencyVN = NumberFormat.getInstance(localeVN);
     private List<OrderDetail> listveg = new ArrayList<>();
     private static Orders odCRUD = new Orders();
- 
+    private File file;
     public OrderManagementGUI() {
         initComponents();
-        
         initTableOrders();//Tên cột sản phẩm đã chọn
         initTableOrderDetail();//Tên cột hóa đơn đã lưu
         loadDataToTableOrders();// Hiển thị dữ liệu sản phẩm đã thêm
@@ -87,8 +92,20 @@ public class OrderManagementGUI extends javax.swing.JFrame{
     }
     private void initTableOrderDetail() {
         tblvegetablemodel = new DefaultTableModel();
-        tblvegetablemodel.setColumnIdentifiers(new String[] {"VegetableID","Name","Unit price","Quantity","Unit","Price"});
+        tblvegetablemodel.setColumnIdentifiers(new String[] {"Image","VegetableID","Name","Unit price","Quantity","Unit","Price"});
         tbloderdetail.setModel(tblvegetablemodel);
+        tbloderdetail.getTableHeader().setReorderingAllowed(false);
+        tbloderdetail.getColumnModel().getColumn(0).setCellRenderer(new ImageRender());
+        tbloderdetail.setRowHeight(100);
+    }
+    private class ImageRender extends DefaultTableCellRenderer{
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+            byte[] bytes = (byte[]) value;
+            ImageIcon imageicon =  new ImageIcon(new ImageIcon(bytes).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+            setIcon(imageicon);
+            return this;
+        }
     }
     private void loadDataToTableOrders() {
         try {
@@ -110,7 +127,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                 tblvegetablemodel.setRowCount(0);
                 for (OrderDetail it : list) {
                 tblvegetablemodel.addRow(new Object[]{
-                    it.getVegetable().getVegetableID(),  it.getVegetable().getVegetable_Name()
+                    it.getVegetable().getImage(), it.getVegetable().getVegetableID(),  it.getVegetable().getVegetable_Name()
                         ,it.getVegetable().getPrice(), it.getQuantity(), it.getVegetable().getUnit(), it.getPrice()
               });
                 total += it.getVegetable().getPrice()*it.getQuantity();
@@ -159,7 +176,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
     private void loadDataToCbVegetables() {
         try {
             VegetableBLL vegBLL = new VegetableBLL();
-            List<Vegetable> listvg = vegBLL.LoadVegetables(WIDTH);
+            List<Vegetable> listvg = vegBLL.LoadVegetablesCbb(WIDTH);
             for (Vegetable vg : listvg) {
                 String name= vg.getVegetableID()+ " - "+vg.getVegetable_Name();
                 cbbvegetable.addItem(name);
@@ -299,7 +316,6 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         jLabel10 = new javax.swing.JLabel();
         txtunit = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtimage = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         spiquanity = new javax.swing.JSpinner();
         jLabel14 = new javax.swing.JLabel();
@@ -312,6 +328,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         btnodelete = new javax.swing.JButton();
         btnoreset = new javax.swing.JButton();
         btnopenvegtbl = new javax.swing.JButton();
+        lbimage = new javax.swing.JLabel();
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -779,9 +796,6 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         jLabel11.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel11.setText("Image:");
 
-        txtimage.setEditable(false);
-        txtimage.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-
         jLabel12.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel12.setText("Quantity:");
 
@@ -847,6 +861,9 @@ public class OrderManagementGUI extends javax.swing.JFrame{
             }
         });
 
+        lbimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbimage.setText("Image here!");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -895,19 +912,18 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                                             .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addComponent(jLabel11)
                                                 .addGap(44, 44, 44)))
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtimage, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(cbbvegetable, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                                        .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(txtunit, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnopenvegtbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbimage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(cbbvegetable, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                                    .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(txtunit, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnopenvegtbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(70, 70, 70)
                                 .addComponent(btnodelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(70, 70, 70)
@@ -935,10 +951,8 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                     .addComponent(jLabel12)
                     .addComponent(spiquanity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel11)
-                        .addComponent(txtimage, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel11)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
@@ -948,7 +962,8 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel17)
                             .addComponent(lbtotal)
-                            .addComponent(jLabel19))))
+                            .addComponent(jLabel19)))
+                    .addComponent(lbimage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnoadd)
@@ -1282,6 +1297,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                 txtcategory.setText(veg.getCategory().getName());
                 txtprice.setText(String.valueOf(veg.getPrice()));
                 txtunit.setText(veg.getUnit());
+                lbimage.setIcon(new ImageIcon(new ImageIcon(veg.getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
                 }catch (SQLException ex) {
                  Logger.getLogger(OrderManagementGUI.class.getName()).log(Level.SEVERE, null, ex);
              }
@@ -1304,11 +1320,12 @@ public class OrderManagementGUI extends javax.swing.JFrame{
             if(row >= 0){         
                 odd= listveg.get(row);
                 if(odd != null){
-                    txtcategory     .setText(odd.getVegetable().getCategory().getName());
-                    txtunit  .setText(odd.getVegetable().getUnit());
-                    txtprice     .setText(String.valueOf(odd.getVegetable().getPrice()));
-                    cbbvegetable     .setSelectedItem(odd.getVegetable().getVegetableID()+" - "+ odd.getVegetable().getVegetable_Name());
-                    lbprice      .setText(String.valueOf(currencyVN.format(odd.getPrice())));
+                    txtcategory.setText(odd.getVegetable().getCategory().getName());
+                    txtunit.setText(odd.getVegetable().getUnit());
+                    txtprice.setText(String.valueOf(odd.getVegetable().getPrice()));
+                    cbbvegetable.setSelectedItem(odd.getVegetable().getVegetableID()+" - "+ odd.getVegetable().getVegetable_Name());
+                    lbprice.setText(String.valueOf(currencyVN.format(odd.getPrice())));
+                    lbimage.setIcon(new ImageIcon(new ImageIcon(odd.getVegetable().getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
                 }
             }
         } catch (Exception e) {
@@ -1326,7 +1343,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         try {
             int row = tblvegetableselect.getSelectedRow();
             if(row >= 0){         
-                int id = (Integer) tblvegetableselect.getValueAt(row, 0);
+                int id = Integer.parseInt(tblvegetableselect.getValueAt(row, 0).toString());
                 VegetableBLL bll = new VegetableBLL();
                 Vegetable v = bll.getVegetable(id);
                 if(v!= null){
@@ -1335,6 +1352,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
                     txtprice     .setText(String.valueOf(v.getPrice()));
                     cbbvegetable     .setSelectedItem(v.getVegetableID()+" - "+ v.getVegetable_Name());
                     lbprice      .setText(String.valueOf(currencyVN.format(v.getPrice())));
+                    lbimage.setIcon(new ImageIcon(new ImageIcon(v.getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
                 }
             }
         } catch (Exception e) {
@@ -1541,6 +1559,7 @@ public class OrderManagementGUI extends javax.swing.JFrame{
     private javax.swing.JPanel jpMain;
     private javax.swing.JPanel jpOrderControl;
     private javax.swing.JLabel lbTime;
+    private javax.swing.JLabel lbimage;
     private javax.swing.JLabel lbprice;
     private javax.swing.JLabel lbtotal;
     private javax.swing.JSpinner spiquanity;
@@ -1552,7 +1571,6 @@ public class OrderManagementGUI extends javax.swing.JFrame{
     private javax.swing.JTextField txtcategory;
     private javax.swing.JTextField txtcity;
     private javax.swing.JTextField txtdate;
-    private javax.swing.JTextField txtimage;
     private javax.swing.JTextField txtkeyword;
     private javax.swing.JTextField txtprice;
     private javax.swing.JTextField txtunit;

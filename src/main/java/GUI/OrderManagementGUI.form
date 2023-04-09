@@ -830,23 +830,21 @@
                                                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="txtimage" alignment="0" min="-2" pref="241" max="-2" attributes="0"/>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <Group type="103" groupAlignment="1" attributes="0">
-                                                          <Component id="cbbvegetable" min="-2" pref="163" max="-2" attributes="0"/>
-                                                          <Group type="102" attributes="0">
-                                                              <Component id="txtprice" min="-2" pref="87" max="-2" attributes="0"/>
-                                                              <EmptySpace max="-2" attributes="0"/>
-                                                              <Component id="jLabel10" min="-2" pref="4" max="-2" attributes="0"/>
-                                                              <EmptySpace max="-2" attributes="0"/>
-                                                              <Component id="txtunit" min="-2" pref="64" max="-2" attributes="0"/>
-                                                          </Group>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lbimage" alignment="1" min="-2" pref="163" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Component id="cbbvegetable" min="-2" pref="163" max="-2" attributes="0"/>
+                                                      <Group type="102" attributes="0">
+                                                          <Component id="txtprice" min="-2" pref="87" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="jLabel10" min="-2" pref="4" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="txtunit" min="-2" pref="64" max="-2" attributes="0"/>
                                                       </Group>
-                                                      <EmptySpace max="32767" attributes="0"/>
-                                                      <Component id="btnopenvegtbl" min="-2" pref="72" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
+                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <Component id="btnopenvegtbl" min="-2" pref="72" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
@@ -884,11 +882,8 @@
                           <Component id="spiquanity" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtimage" alignment="3" min="-2" pref="124" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -902,6 +897,7 @@
                                   <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Component id="lbimage" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -1024,14 +1020,6 @@
                 <Property name="text" type="java.lang.String" value="Image:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtimage">
-              <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="SansSerif" size="12" style="0"/>
-                </Property>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -1152,6 +1140,12 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnopenvegtblActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lbimage">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Image here!"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
