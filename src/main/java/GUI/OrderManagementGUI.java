@@ -1124,11 +1124,12 @@ public class OrderManagementGUI extends javax.swing.JFrame{
        if(cbbcustomer.getSelectedItem().equals("")){
            return;
        }else{
-           String info = cbbcustomer.getSelectedItem().toString();
-        int id = Character.getNumericValue(info.charAt(0)); 
+           String select = cbbcustomer.getSelectedItem().toString();
+           String[] info = select.split(" - ");
+           String id = info[0];
         try {
              CustomerBLL cusBLL = new CustomerBLL();        
-             Customers cus = cusBLL.getCustomer(id);
+             Customers cus = cusBLL.getCustomer(Integer.parseInt(id));
              txtdate.setText(lbTime.getText());
              txtaddress.setText(cus.getAddress());
              txtcity.setText(cus.getCity());
@@ -1147,10 +1148,11 @@ public class OrderManagementGUI extends javax.swing.JFrame{
         Vegetable veg = new Vegetable();
         VegetableBLL vegbll = new VegetableBLL();
         String vegselected = cbbvegetable.getSelectedItem().toString();
-        int vegid = Character.getNumericValue(vegselected.charAt(0));
+        String[] info = vegselected.split(" - ");
+        String vegid = info[0];
         boolean tontai = false;
         try {
-            veg = vegbll.getVegetable(vegid);
+            veg = vegbll.getVegetable(Integer.parseInt(vegid));
             odd.setVegetable(veg);
             odd.setQuantity((int) spiquanity.getValue());
             odd.setPrice(Float.parseFloat(txtprice.getText().toString()) * (int) spiquanity.getValue());
