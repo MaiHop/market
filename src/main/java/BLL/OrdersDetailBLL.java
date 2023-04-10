@@ -16,21 +16,21 @@ import java.util.List;
  * @author Admin
  */
 public class OrdersDetailBLL {
-    OrdersDetailDAL orderdetail;
+    private OrdersDetailDAL oddDAL;
     public OrdersDetailBLL() {
-        orderdetail = new OrdersDetailDAL();
+        oddDAL = new OrdersDetailDAL();
     }
     public List findbyID(int id) throws SQLException {
         List list = new ArrayList();
-        list = orderdetail.findbyId(id);
+        list = oddDAL.findbyId(id);
         return list;
     }
     public boolean addorupdateOrdersDetail(OrderDetail odd) throws SQLException {
-        boolean result = orderdetail.addorUpdateOrderDetail(odd);
+        boolean result = oddDAL.addorUpdateOrderDetail(odd);
         return result;
     }
     public boolean deleteOrdersDetail(OrderDetail odd) throws SQLException {
-        boolean result = orderdetail.deleteOrderDetail(odd);
+        boolean result = oddDAL.deleteOrderDetail(odd);
         return result;
     }
 }

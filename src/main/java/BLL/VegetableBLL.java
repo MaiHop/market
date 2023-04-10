@@ -15,13 +15,13 @@ import java.util.List;
  * @author Admin
  */
 public class VegetableBLL {
-    VegetableDAL vegetable;
+    private VegetableDAL vegDAL;
     public VegetableBLL() {
-        vegetable = new VegetableDAL();
+        vegDAL = new VegetableDAL();
     }
     public List LoadVegetables(int page) throws SQLException {
         int numofrecords = 30;
-        List list = vegetable.loadVegetable();
+        List list = vegDAL.loadVegetable();
         int size = list.size();
         int from, to;
         from = (page - 1) * numofrecords;
@@ -31,7 +31,7 @@ public class VegetableBLL {
     }
     public List LoadVegetablesCbb(int page) throws SQLException {
         int numofrecords = 3;
-        List list = vegetable.loadVegetable();
+        List list = vegDAL.loadVegetable();
         int size = list.size();
         int from, to;
         from = (page - 1) * numofrecords;
@@ -42,38 +42,38 @@ public class VegetableBLL {
     public List findbyname(String name) throws SQLException {
         List list = new ArrayList();
 
-        list = vegetable.findbyname(name);
+        list = vegDAL.findbyname(name);
 
         return list;
 
     }
     public List filterVegetable(String name, String catagoryid, String unit, String amount, String price) throws SQLException {
         List list = new ArrayList();
-        list = vegetable.filterVegetable(name, catagoryid, unit, amount, price);
+        list = vegDAL.filterVegetable(name, catagoryid, unit, amount, price);
         return list;
 
     }
     public Vegetable getVegetable(int vegetableID) throws SQLException
     {
-        Vegetable o = vegetable.getVegetable(vegetableID);
+        Vegetable o = vegDAL.getVegetable(vegetableID);
         return o;
     }
     public boolean addVegetable(Vegetable v) throws SQLException {
-        boolean result = vegetable.addVegetable(v);
+        boolean result = vegDAL.addVegetable(v);
         return result;
     }
 
     public boolean updateVegetable(Vegetable v) throws SQLException {
-        boolean result = vegetable.updateVegetable(v);
+        boolean result = vegDAL.updateVegetable(v);
         return result;
     }
     public boolean deleteVegetable(Vegetable v) throws SQLException {
-        boolean result = vegetable.deleteVegetable(v);
+        boolean result = vegDAL.deleteVegetable(v);
         return result;
     }
      public long getCountVegetable(){
            try {
-               return vegetable.getCountVegetable();
+               return vegDAL.getCountVegetable();
            }
            catch (Exception e) {
                e.printStackTrace();
@@ -83,7 +83,7 @@ public class VegetableBLL {
       public List<Vegetable> getListVegetable() {
 
        try{
-           return vegetable.loadVegetable();
+           return vegDAL.loadVegetable();
        }
        catch (Exception e) {
            e.printStackTrace();

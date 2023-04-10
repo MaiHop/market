@@ -16,13 +16,13 @@ import java.util.List;
  * @author Admin
  */
 public class OrderBLL {
-    OrdersDAL orders;
+    private OrdersDAL odDAL;
     public OrderBLL() {
-        orders = new OrdersDAL();
+        odDAL = new OrdersDAL();
     }
     public List LoadOrders(int page) throws SQLException {
         int numofrecords = 30;
-        List list = orders.loadOrders();
+        List list = odDAL.loadOrders();
         int size = list.size();
         int from, to;
         from = (page - 1) * numofrecords;
@@ -33,32 +33,32 @@ public class OrderBLL {
     public List findbyDate(Date date) throws SQLException {
         List list = new ArrayList();
 
-        list = orders.findbyDate(date);
+        list = odDAL.findbyDate(date);
 
         return list;
 
     }
     public Orders getOrder(int orderID) throws SQLException
     {
-        Orders o = orders.getOrder(orderID);
+        Orders o = odDAL.getOrder(orderID);
         return o;
     }
     public boolean addOrder(Orders o) throws SQLException {
-        boolean result = orders.addOrder(o);
+        boolean result = odDAL.addOrder(o);
         return result;
     }
 
     public boolean updateOrder(Orders o) throws SQLException {
-        boolean result = orders.updateOrders(o);
+        boolean result = odDAL.updateOrders(o);
         return result;
     }
     public boolean deleteOrder(Orders o) throws SQLException {
-        boolean result = orders.deleteOrders(o);
+        boolean result = odDAL.deleteOrders(o);
         return result;
     }
     public long getTotal(){
            try {
-               return orders.getTotal();
+               return odDAL.getTotal();
            }
            catch (Exception e) {
                e.printStackTrace();
@@ -68,7 +68,7 @@ public class OrderBLL {
       public List<Orders> getListOrder() {
 
        try{
-           return orders.loadOrders();
+           return odDAL.loadOrders();
        }
        catch (Exception e) {
            e.printStackTrace();

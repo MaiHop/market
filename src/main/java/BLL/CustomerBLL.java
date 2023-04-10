@@ -15,13 +15,13 @@ import java.util.List;
  * @author Admin
  */
 public class CustomerBLL {
-    CustomerDAL customers;
+    private CustomerDAL cusDAL;
     public CustomerBLL() {
-        customers = new CustomerDAL();
+        cusDAL = new CustomerDAL();
     }
     public List LoadCustomers(int page) throws SQLException {
         int numofrecords = 30;
-        List list = customers.loadCustomers();
+        List list = cusDAL.loadCustomers();
         int size = list.size();
         int from, to;
         from = (page - 1) * numofrecords;
@@ -32,32 +32,32 @@ public class CustomerBLL {
     public List findbyName(String name) throws SQLException {
         List list = new ArrayList();
 
-        list = customers.findbyName(name);
+        list = cusDAL.findbyName(name);
 
         return list;
 
     }
     public Customers getCustomer(int customerID) throws SQLException
     {
-        Customers o = customers.getCustomer(customerID);
+        Customers o = cusDAL.getCustomer(customerID);
         return o;
     }
     public boolean addCustomer(Customers c) throws SQLException {
-        boolean result = customers.addCustomer(c);
+        boolean result = cusDAL.addCustomer(c);
         return result;
     }
 
     public boolean updateCustomer(Customers c) throws SQLException {
-        boolean result = customers.updateCustomers(c);
+        boolean result = cusDAL.updateCustomers(c);
         return result;
     }
     public boolean deleteCustomer(Customers c) throws SQLException {
-        boolean result = customers.deleteCustomers(c);
+        boolean result = cusDAL.deleteCustomers(c);
         return result;
     }
        public long getCountCustomer(){
            try {
-               return customers.getCountCustomer();
+               return cusDAL.getCountCustomer();
            }
            catch (Exception e) {
                e.printStackTrace();

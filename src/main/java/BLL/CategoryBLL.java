@@ -16,12 +16,12 @@ import java.util.List;
  * @author Admin
  */
 public class CategoryBLL {
-    CategoryDAL category;
+    private CategoryDAL cateDAL;
     public CategoryBLL() {
-        category = new CategoryDAL();
+        cateDAL = new CategoryDAL();
     }
     public Category findbyname(String name) throws SQLException {
-        Category c = category.findbyname(name);
+        Category c = cateDAL.findbyname(name);
         return c;
 
     }
