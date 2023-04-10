@@ -44,46 +44,28 @@ public class VegetableDAL {
             amountquery = " AND " +amount;
             if(price.equals("Descending")){
             hql = "FROM Vegetable  "
-                + "WHERE Vegetable_Name LIKE :name "
-                + "AND str(CatagoryID) LIKE :catagoryid "
-                + "AND Unit LIKE :unit "
-                + amountquery
+                + "WHERE Vegetable_Name LIKE :name AND str(CatagoryID) LIKE :catagoryid AND Unit LIKE :unit " + amountquery
                 + " ORDER BY Price DESC  ";
             }else if(price.equals("Ascending")){
                 hql = "FROM Vegetable  "
-                    + "WHERE Vegetable_Name LIKE :name "
-                    + "AND str(CatagoryID) LIKE :catagoryid "
-                    + "AND Unit LIKE :unit "
-                    + amountquery
+                    + "WHERE Vegetable_Name LIKE :name AND str(CatagoryID) LIKE :catagoryid AND Unit LIKE :unit "+ amountquery
                     + " ORDER BY Price ASC  ";
             }else{
                 hql = "FROM Vegetable  "
-                    + "WHERE Vegetable_Name LIKE :name "
-                    + "AND str(CatagoryID) LIKE :catagoryid "
-                    + "AND Unit LIKE :unit "
-                    + amountquery;
+                    + "WHERE Vegetable_Name LIKE :name AND str(CatagoryID) LIKE :catagoryid AND Unit LIKE :unit "+ amountquery;
             }         
         }else{
             if(price.equals("Descending")){
             hql = "FROM Vegetable  "
-                + "WHERE Vegetable_Name LIKE :name "
-                + "AND str(CatagoryID) LIKE :catagoryid "
-                + "AND Unit LIKE :unit "
-                + amountquery
+                + "WHERE Vegetable_Name LIKE :name AND str(CatagoryID) LIKE :catagoryid AND Unit LIKE :unit "+ amountquery
                 + " ORDER BY Price DESC  ";
             }else if(price.equals("Ascending")){
                 hql = "FROM Vegetable  "
-                    + "WHERE Vegetable_Name LIKE :name "
-                    + "AND str(CatagoryID) LIKE :catagoryid "
-                    + "AND Unit LIKE :unit "
-                    + amountquery
+                    + "WHERE Vegetable_Name LIKE :name AND str(CatagoryID) LIKE :catagoryid AND Unit LIKE :unit "+ amountquery
                     + " ORDER BY Price ASC  ";
             }else{
                 hql = "FROM Vegetable  "
-                    + "WHERE Vegetable_Name LIKE :name "
-                    + "AND str(CatagoryID) LIKE :catagoryid "
-                    + "AND Unit LIKE :unit "
-                    + amountquery;
+                    + "WHERE Vegetable_Name LIKE :name AND str(CatagoryID) LIKE :catagoryid AND Unit LIKE :unit "+ amountquery;
             }     
         }
         vegetable = session.createQuery(hql)
