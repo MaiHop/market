@@ -23,6 +23,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 /**
@@ -79,6 +80,33 @@ public class OrdersDAL {
         session.delete(o);
         session.getTransaction().commit();
         return true;
+    }
+      public int getTotal(){
+       
+        double total = 0;
+      
+        try {
+           session.beginTransaction();
+            Query query = session.createQuery("SELECT sum(Total) from Orders");
+            total = (double)query.uniqueResult();
+            session.getTransaction().commit();
+          
+        } catch (HibernateException e) {
+            
+        }
+        return (int)total;
+     }
+      public long getCountOrders(){
+        long amount = 0;
+        try {
+          session.beginTransaction();
+            Query query = session.createQuery("select count(*) from Orders");
+            amount = (long)query.uniqueResult();
+         
+        } catch (HibernateException e) {
+            
+        }
+        return amount;
     }
 //    public static void main(String[] args) throws ParseException {
 //        

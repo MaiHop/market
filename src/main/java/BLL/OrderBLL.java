@@ -56,5 +56,23 @@ public class OrderBLL {
         boolean result = orders.deleteOrders(o);
         return result;
     }
+    public long getTotal(){
+           try {
+               return orders.getTotal();
+           }
+           catch (Exception e) {
+               e.printStackTrace();
+           }
+           return 0;
+    }
+      public List<Orders> getListOrder() {
 
+       try{
+           return orders.loadOrders();
+       }
+       catch (Exception e) {
+           e.printStackTrace();
+       }
+       return null;
+    }
 }

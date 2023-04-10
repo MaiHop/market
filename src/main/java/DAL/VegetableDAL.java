@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Filter;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -128,6 +129,18 @@ public class VegetableDAL {
         session.delete(v);
         session.getTransaction().commit();
         return true;
+    }
+      public long getCountVegetable(){
+        long amount = 0;
+        try {
+          session.beginTransaction();
+            Query query = session.createQuery("select count(*) from  Vegetable");
+            amount = (long)query.uniqueResult();
+         
+        } catch (HibernateException e) {
+            
+        }
+        return amount;
     }
     
 //        public static void main(String[] args) {

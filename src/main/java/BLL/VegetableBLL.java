@@ -71,4 +71,23 @@ public class VegetableBLL {
         boolean result = vegetable.deleteVegetable(v);
         return result;
     }
+     public long getCountVegetable(){
+           try {
+               return vegetable.getCountVegetable();
+           }
+           catch (Exception e) {
+               e.printStackTrace();
+           }
+           return 0;
+    }
+      public List<Vegetable> getListVegetable() {
+
+       try{
+           return vegetable.loadVegetable();
+       }
+       catch (Exception e) {
+           e.printStackTrace();
+       }
+       return null;
+    }
 }

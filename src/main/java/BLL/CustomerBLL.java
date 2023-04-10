@@ -55,6 +55,15 @@ public class CustomerBLL {
         boolean result = customers.deleteCustomers(c);
         return result;
     }
+       public long getCountCustomer(){
+           try {
+               return customers.getCountCustomer();
+           }
+           catch (Exception e) {
+               e.printStackTrace();
+           }
+           return 0;
+    }
 //    public static void main(String[] args) throws SQLException {
 //        CustomerBLL bll = new CustomerBLL();
 //        Customers customers = bll.getCustomer((char)1);

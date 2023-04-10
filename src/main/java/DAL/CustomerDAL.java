@@ -72,6 +72,21 @@ public class CustomerDAL {
         session.getTransaction().commit();
         return true;
     }
+     public long getCountCustomer(){
+      
+        long amout = 0;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("select count(*) from Customers");
+            amout = (long)query.uniqueResult();
+           session.getTransaction().commit();
+        } catch (Exception e) {
+          
+           
+            }
+        return amout;
+        
+    }
     public static void main(String[] args) {
         
         try{
