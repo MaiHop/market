@@ -20,7 +20,7 @@ public class CustomerBLL {
         cusDAL = new CustomerDAL();
     }
     public List LoadCustomers(int page) throws SQLException {
-        int numofrecords = 30;
+        int numofrecords = 30;  
         List list = cusDAL.loadCustomers();
         int size = list.size();
         int from, to;

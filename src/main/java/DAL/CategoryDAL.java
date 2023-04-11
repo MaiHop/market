@@ -84,18 +84,5 @@ public class CategoryDAL {
         session.getTransaction().commit();
         return true;
     }
-    
-    public static void main(String[] args) {
-        
-        try{
-            factory = new Configuration().configure().buildSessionFactory();
-        }catch(Throwable ex){
-            System.err.println("Failed to create sessionFactory object."+ ex);
-            throw new ExceptionInInitializerError(ex);
-        }   
-        CategoryDAL category = new CategoryDAL();
-        Category v = category.findbyname("Fruit");
-        
-            System.out.println("Name: " + v.getCatagoryID());
-    }
+   
 }

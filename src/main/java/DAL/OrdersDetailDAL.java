@@ -33,13 +33,7 @@ public class OrdersDetailDAL {
     public OrdersDetailDAL() {
         session = HibernateUtils.getSessionFactory().openSession();
     }
-    public List loadOrderDetail() {
-        List<OrderDetail> orderdetail;
-        session.beginTransaction();
-        orderdetail = session.createQuery("FROM OrderDetail", OrderDetail.class).list();
-        session.getTransaction().commit();
-        return orderdetail;
-    }
+
     public List findbyId(int orderId ) {
         List<OrderDetail> OrderDetail;
         session.beginTransaction();
@@ -73,18 +67,4 @@ public class OrdersDetailDAL {
         session.getTransaction().commit();
         return true;
     }
-    public static void main(String[] args) throws ParseException {
-        
-        try{
-            factory = new Configuration().configure().buildSessionFactory();
-           
-        }catch(Throwable ex){
-            System.err.println("Failed to create sessionFactory object."+ ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-        OrdersDetailDAL od = new OrdersDetailDAL();
-        List<OrderDetail> oddal = od.loadOrderDetail();
-        ;
-        
-}
 }
