@@ -14,6 +14,7 @@ public class Mainform extends javax.swing.JFrame {
     private CustomerPanel cus;
     private OrderManagementPanel od;
     private VegetablePanel veg;
+    private ThongKePanel tk;
     String active = "home";
     /**
      * Creates new form Mainform
@@ -173,6 +174,9 @@ public class Mainform extends javax.swing.JFrame {
         thongke.setBackground(new java.awt.Color(0, 102, 102));
         thongke.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         thongke.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                thongkeMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 thongkeMouseEntered(evt);
             }
@@ -385,6 +389,15 @@ public class Mainform extends javax.swing.JFrame {
         }
         tpMain.setSelectedComponent(veg);
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void thongkeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_thongkeMouseClicked
+        if(tk == null) {
+            tk = new ThongKePanel();
+
+            tpMain.addTab("ONSITE COURSE", tk);
+        }
+        tpMain.setSelectedComponent(tk);
+    }//GEN-LAST:event_thongkeMouseClicked
 
     /**
      * @param args the command line arguments
