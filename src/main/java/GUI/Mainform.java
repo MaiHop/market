@@ -5,6 +5,7 @@
 package GUI;
 
 import java.awt.Color;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 /**
  *
@@ -21,6 +22,26 @@ public class Mainform extends javax.swing.JFrame {
      */
     public Mainform() {
         initComponents();
+        tpMain.setUI(new BasicTabbedPaneUI() {  
+        @Override  
+        protected int calculateTabAreaHeight(int tab_placement, int run_count, int max_tab_height) {  
+//        if (tpMain.getTabCount() > 1)
+//            return super.calculateTabAreaHeight(tab_placement, run_count, max_tab_height);  
+//        else  
+            return 0;  
+    }  
+    });  
+         if(veg == null) {
+            veg = new VegetablePanel();
+
+            tpMain.addTab("", veg);
+        }
+        tpMain.setSelectedComponent(veg);
+        active = "nhaphang";
+        nhaphang.setBackground(new Color(30,144,255));
+        laphoadon.setBackground(new Color(0,102,102));
+        quanlykhachhang.setBackground(new Color(0,102,102));
+        thongke.setBackground(new Color(0,102,102));
     }
 
     /**
@@ -88,14 +109,14 @@ public class Mainform extends javax.swing.JFrame {
             .addGroup(nhaphangLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         nhaphangLayout.setVerticalGroup(
             nhaphangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        left_side_bar.add(nhaphang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 240, 50));
+        left_side_bar.add(nhaphang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 250, 50));
 
         laphoadon.setBackground(new java.awt.Color(0, 102, 102));
         laphoadon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -124,14 +145,14 @@ public class Mainform extends javax.swing.JFrame {
             .addGroup(laphoadonLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         laphoadonLayout.setVerticalGroup(
             laphoadonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        left_side_bar.add(laphoadon, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 240, 50));
+        left_side_bar.add(laphoadon, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 250, 50));
 
         quanlykhachhang.setBackground(new java.awt.Color(0, 102, 102));
         quanlykhachhang.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -162,14 +183,14 @@ public class Mainform extends javax.swing.JFrame {
             .addGroup(quanlykhachhangLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         quanlykhachhangLayout.setVerticalGroup(
             quanlykhachhangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        left_side_bar.add(quanlykhachhang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 240, 50));
+        left_side_bar.add(quanlykhachhang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 250, 50));
 
         thongke.setBackground(new java.awt.Color(0, 102, 102));
         thongke.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -198,14 +219,14 @@ public class Mainform extends javax.swing.JFrame {
             .addGroup(thongkeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
         thongkeLayout.setVerticalGroup(
             thongkeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        left_side_bar.add(thongke, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 240, -1));
+        left_side_bar.add(thongke, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 250, -1));
 
         getContentPane().add(left_side_bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 800));
 
@@ -340,11 +361,11 @@ public class Mainform extends javax.swing.JFrame {
         quanlykhachhang.setBackground(new Color(0,102,102));
         thongke.setBackground(new Color(0,102,102));
         try{
-            //clearing
+//            clearing
 //            main.removeAll();
 //            main.repaint();
 //            main.revalidate();
-//            //adding a pannel
+            //adding a pannel
 //            main.add(import_nhaphang);
 //            main.repaint();
 //            main.revalidate();
@@ -364,37 +385,37 @@ public class Mainform extends javax.swing.JFrame {
     }//GEN-LAST:event_nhaphangMouseEntered
 
     private void nhaphangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nhaphangMouseClicked
-        if(cus == null) {
-            cus = new CustomerPanel();
+        if(veg == null) {
+            veg = new VegetablePanel();
 
-            tpMain.addTab("ONSITE COURSE", cus);
+            tpMain.addTab("", veg);
         }
-        tpMain.setSelectedComponent(cus);
+        tpMain.setSelectedComponent(veg);
     }//GEN-LAST:event_nhaphangMouseClicked
 
     private void laphoadonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_laphoadonMouseClicked
         if(od == null) {
             od = new OrderManagementPanel();
 
-            tpMain.addTab("ONSITE COURSE", od);
+            tpMain.addTab("", od);
         }
         tpMain.setSelectedComponent(od);
     }//GEN-LAST:event_laphoadonMouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        if(veg == null) {
-            veg = new VegetablePanel();
+        if(cus == null) {
+            cus = new CustomerPanel();
 
-            tpMain.addTab("ONSITE COURSE", veg);
+            tpMain.addTab("", cus);
         }
-        tpMain.setSelectedComponent(veg);
+        tpMain.setSelectedComponent(cus);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void thongkeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_thongkeMouseClicked
         if(tk == null) {
             tk = new ThongKePanel();
 
-            tpMain.addTab("ONSITE COURSE", tk);
+            tpMain.addTab("", tk);
         }
         tpMain.setSelectedComponent(tk);
     }//GEN-LAST:event_thongkeMouseClicked

@@ -32,6 +32,7 @@ import lombok.Data;
 @Entity
 @Table(name = "OrderDetail")
 public class OrderDetail implements Serializable{
+    
     @Id
     private int OrderID;
             

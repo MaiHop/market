@@ -67,4 +67,22 @@ public class OrdersDetailDAL {
         session.getTransaction().commit();
         return true;
     }
+    public static void main(String[] args) {
+        
+        try{
+            factory = new Configuration().configure().buildSessionFactory();
+           
+        }catch(Throwable ex){
+            System.err.println("Failed to create sessionFactory object."+ ex);
+            throw new ExceptionInInitializerError(ex);
+        }
+         OrdersDetailDAL odDAL = new OrdersDetailDAL();
+        List<OrderDetail> odd = odDAL.findbyId(54);
+         for(OrderDetail od : odd){
+                System.out.println("CatagoryID: "+ od.getOrderID());
+                System.out.println("Name: "+ od.getVegetableID());
+         }
+                
+            //}
+    }
 }

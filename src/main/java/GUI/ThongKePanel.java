@@ -86,7 +86,7 @@ public class ThongKePanel extends javax.swing.JPanel {
         jPanel8 = new javax.swing.JPanel();
         jPanelChart = new javax.swing.JPanel();
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THỐNG KÊ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 1, 24))); // NOI18N
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THỐNG KÊ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 18))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 51));
 
